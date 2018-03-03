@@ -1,1 +1,1 @@
-# CPAR
+# Parallel Computation
