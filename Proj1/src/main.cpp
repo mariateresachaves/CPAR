@@ -21,8 +21,11 @@ int main(int argc, char const *argv[]) {
     Matrix matrix_B(num_rows_B, num_cols_B);
     FillMatrix(matrix_B);
 
-    cout << "Matrix A" << endl;
-    PrintMatrix(matrix_A);
+    // Test Matrix Values
+    //cout << "Matrix A" << endl;
+    //PrintMatrix(matrix_A);
+    //cout << "Matrix B" << endl;
+    //PrintMatrix(matrix_B);
 
     return 0;
 }
