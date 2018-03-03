@@ -1,6 +1,7 @@
 #include "matrix.hpp"
 
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -22,10 +23,10 @@ int main(int argc, char const *argv[]) {
     FillMatrix(matrix_B);
 
     // Test Matrix Values
-    //cout << "Matrix A" << endl;
-    //PrintMatrix(matrix_A);
-    //cout << "Matrix B" << endl;
-    //PrintMatrix(matrix_B);
+    cout << "Matrix A" << endl;
+    PrintMatrix(matrix_A);
+    cout << "Matrix B" << endl;
+    PrintMatrix(matrix_B);
 
     return 0;
 }
@@ -33,7 +34,7 @@ int main(int argc, char const *argv[]) {
 static void FillMatrix(Matrix &matrix) {
     for (size_t i = 0; i < matrix.num_rows; i++) {
         for (size_t j = 0; j < matrix.num_cols; j++) {
-            matrix(i, j) = 1.0;
+            matrix(i, j) = rand() % 100 + 1; //random number between 1 and 100
         }
     }
 }
@@ -41,7 +42,20 @@ static void FillMatrix(Matrix &matrix) {
 static void PrintMatrix(Matrix &matrix) {
     for (size_t i = 0; i < matrix.num_rows; i++) {
         for (size_t j = 0; j < matrix.num_cols; j++) {
-            cout << matrix(i, j);
+            if(i==0 && j==0)
+                cout << "[[" << matrix(i, j) << ",";
+
+            else if(j==0)
+                cout << " [" << matrix(i, j) << ",";
+
+            else if(j==matrix.num_cols-1 && i==matrix.num_rows-1)
+                cout << matrix(i, j) << "]]";
+
+            else if(j==matrix.num_cols-1)
+                cout << matrix(i, j) << "]";
+
+            else
+                cout << matrix(i, j) << ",";
         }
         cout << endl;
     }
