@@ -22,7 +22,10 @@ public:
     void setMatrixValue(int index, int n);
 
     void fill();
+    void fillZeros();
     void print();
+
+    Matrix *multiply(Matrix *matrix_B);
 };
 
 #endif // MATRIX_HPP_

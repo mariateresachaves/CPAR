@@ -20,28 +20,31 @@ int main(int argc, char const *argv[]) {
     papi.Init();
     papi.InstallEvents();
 
-
     if(!right_args(argc, argv))
         exit(1);
 
     if(!right_sizes(argv))
         exit(1);
 
+    Matrix *matrix_A = new Matrix(size_A, size_A);
+    matrix_A->fill();
+
+    Matrix *matrix_B = new Matrix(size_B, size_B);
+    matrix_B->fill();
+
     papi.Start();
 
-    Matrix matrix_A(size_A, size_A);
-    matrix_A.fill();
-
-    Matrix matrix_B(size_B, size_B);
-    matrix_B.fill();
+    Matrix *result = matrix_A->multiply(matrix_B);
 
     papi.StopAndReset();
 
     // Test Matrix Values
-    cout << "Matrix A" << endl;
-    matrix_A.print();
+    /*cout << "Matrix A" << endl;
+    matrix_A->print();
     cout << "Matrix B" << endl;
-    matrix_B.print();
+    matrix_B->print();
+    cout << "Matrix AxB" << endl;
+    result->print();*/
 
     return 0;
 }
