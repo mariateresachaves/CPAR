@@ -2,63 +2,47 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <sstream>
 
 using namespace std;
 
 
-static void FillMatrix(Matrix &matrix);
-static void PrintMatrix(Matrix &matrix);
-
-
 int main(int argc, char const *argv[]) {
-    size_t num_rows_A = 10;
-    size_t num_cols_A = 10;
-    size_t num_rows_B = 10;
-    size_t num_cols_B = 10;
+    if(argc != 3) {
+        cerr << "[Wrong_Args] usage: " << argv[0] << " "
+             << "<size_matrix_A> <size_matrix_B>" << endl
+             << "\t Where:" << endl
+             << "\t\t <size_matrix_A> - matrix size_matrix_A x size_matrix_A"
+             << endl
+             << "\t\t <size_matrix_B> - matrix size_matrix_B x size_matrix_B"
+             << endl;
+        exit(1);
+    }
 
-    Matrix matrix_A(num_rows_A, num_cols_A);
-    FillMatrix(matrix_A);
+    size_t size_A;
+    size_t size_B;
 
-    Matrix matrix_B(num_rows_B, num_cols_B);
-    FillMatrix(matrix_B);
+    istringstream s_A(argv[1]);
+    istringstream s_B(argv[2]);
+
+    if(!(s_A >> size_A) || !(s_B >> size_B)) {
+        cerr
+            << "[Wrong_Args] <size_matrix_A> and <size_matrix_B> must be integers"
+            << endl;
+        exit(1);
+    }
+
+    Matrix matrix_A(size_A, size_A);
+    matrix_A.fill();
+
+    Matrix matrix_B(size_B, size_B);
+    matrix_B.fill();
 
     // Test Matrix Values
     cout << "Matrix A" << endl;
-    PrintMatrix(matrix_A);
+    matrix_A.print();
     cout << "Matrix B" << endl;
-    PrintMatrix(matrix_B);
+    matrix_B.print();
 
     return 0;
-}
-
-static void FillMatrix(Matrix &matrix) {
-    for (size_t i = 0; i < matrix.num_rows; i++) {
-        for (size_t j = 0; j < matrix.num_cols; j++) {
-            matrix(i, j) = rand() % 100 + 1; //random number between 1 and 100
-        }
-    }
-}
-
-static void PrintMatrix(Matrix &matrix) {
-    for (size_t i = 0; i < matrix.num_rows; i++) {
-        for (size_t j = 0; j < matrix.num_cols; j++) {
-            if(i==0 && j==0)
-                cout << "[[" << matrix(i, j) << ",";
-
-            else if(j==0)
-                cout << " [" << matrix(i, j) << ",";
-
-            else if(j==matrix.num_cols-1 && i==matrix.num_rows-1)
-                cout << matrix(i, j) << "]]";
-
-            else if(j==matrix.num_cols-1)
-                cout << matrix(i, j) << "]";
-
-            else
-                cout << matrix(i, j) << ",";
-        }
-        cout << endl;
-    }
-
-    cout << endl;
 }
