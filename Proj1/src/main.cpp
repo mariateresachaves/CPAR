@@ -1,4 +1,7 @@
 #include "matrix.hpp"
+#ifndef NPAPI
+#include "papic.hpp"
+#endif
 
 #include <iostream>
 #include <cstdlib>
@@ -14,17 +17,33 @@ static bool right_sizes(char const *argv[]);
 
 
 int main(int argc, char const *argv[]) {
+    #ifndef NPAPI
+      PapiC papi = PapiC();
+
+      papi.Init();
+      papi.InstallEvents();
+    #endif
+
+
     if(!right_args(argc, argv))
         exit(1);
 
     if(!right_sizes(argv))
         exit(1);
 
+    #ifndef NPAPI
+        papi.Start();
+    #endif
+
     Matrix matrix_A(size_A, size_A);
     matrix_A.fill();
 
     Matrix matrix_B(size_B, size_B);
     matrix_B.fill();
+
+    #ifndef NPAPI
+        papi.StopAndReset();
+    #endif
 
     // Test Matrix Values
     cout << "Matrix A" << endl;
