@@ -16,17 +16,23 @@ public:
     size_t num_rows;
     size_t num_cols;
 
+    inline int &operator()(size_t row, size_t column) {
+        return matrix_values[row * num_cols + column];
+    }
+
+    inline int operator()(size_t row, size_t column) const {
+        return matrix_values[row * num_cols + column];
+    }
+
     Matrix(size_t num_rows, size_t num_cols);
     ~Matrix();
 
-    int getMatrixValue(int index);
-    void setMatrixValue(int index, int n);
+    void fill(Matrix *matrix);
+    void fillZeros(Matrix *matrix);
+    void print(Matrix *matrix);
 
-    void fill();
-    void fillZeros();
-    void print();
-
-    Matrix *basic_multiply(Matrix *matrix_B);
+    Matrix *basic_multiply(Matrix *matrix_A, Matrix *matrix_B);
+    Matrix *line_multiply(Matrix *matrix_A, Matrix *matrix_B);
 };
 
 #endif // MATRIX_HPP_

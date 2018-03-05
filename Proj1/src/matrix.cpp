@@ -22,47 +22,39 @@ Matrix::Matrix(size_t num_rows_, size_t num_cols_) {
 
 Matrix::~Matrix() { delete[] matrix_values; }
 
-void Matrix::fill() {
+void Matrix::fill(Matrix *matrix) {
     for(size_t i = 0; i < num_rows; i++) {
         for(size_t j = 0; j < num_cols; j++) {
-            setMatrixValue((i*num_cols + j), (rand() % 100 + 1)); //random number between 1 and 100
+            (*matrix)(i,j) = (rand() % 100 + 1); //random number between 1 and 100
         }
     }
 }
 
-void Matrix::fillZeros() {
+void Matrix::fillZeros(Matrix *matrix) {
     for(size_t i = 0; i < num_rows; i++) {
         for(size_t j = 0; j < num_cols; j++) {
-            setMatrixValue((i*num_cols + j), 0); //random number between 1 and 100
+            (*matrix)(i,j) = 0; //random number between 1 and 100
         }
     }
 }
 
-int Matrix::getMatrixValue(int index) {
-    return matrix_values[index];
-}
-
-void Matrix::setMatrixValue(int index, int n) {
-    matrix_values[index] = n;
-}
-
-void Matrix::print() {
+void Matrix::print(Matrix *matrix) {
     for(size_t i = 0; i < num_rows; i++) {
         for(size_t j = 0; j < num_cols; j++) {
             if(i==0 && j==0)
-                cout << "[[" << getMatrixValue(i*num_cols + j) << ",";
+                cout << "[[" << (*matrix)(i,j) << ",";
 
             else if(j==0)
-                cout << " [" << getMatrixValue(i*num_cols + j) << ",";
+                cout << " [" << (*matrix)(i,j) << ",";
 
             else if(j==num_cols-1 && i==num_rows-1)
-                cout << getMatrixValue(i*num_cols + j) << "]]";
+                cout << (*matrix)(i,j) << "]]";
 
             else if(j==num_cols-1)
-                cout << getMatrixValue(i*num_cols + j) << "]";
+                cout << (*matrix)(i,j) << "]";
 
             else
-                cout << getMatrixValue(i*num_cols + j) << ",";
+                cout << (*matrix)(i,j) << ",";
         }
         cout << endl;
     }
@@ -70,17 +62,32 @@ void Matrix::print() {
     cout << endl;
 }
 
-Matrix *Matrix::basic_multiply(Matrix *matrix_B) {
-    Matrix *result = new Matrix(num_rows, matrix_B->num_cols);
-    result->fillZeros();
+Matrix *Matrix::basic_multiply(Matrix *matrix_A, Matrix *matrix_B) {
+    Matrix *result = new Matrix(matrix_A->num_rows, matrix_B->num_cols);
+    fillZeros(result);
 
-    for(size_t i=0; i<num_cols; i++) {
-        for(size_t j=0; j<num_cols; j++) {
+    for(size_t i=0; i<matrix_A->num_rows; i++) {
+        for(size_t j=0; j<matrix_B->num_cols; j++) {
             int cell_result = 0;
-            for(size_t k=0; k<num_cols; k++) {
-                cell_result += getMatrixValue(i*num_cols+k) * matrix_B->getMatrixValue(k*num_cols+j);
+            for(size_t k=0; k<matrix_A->num_cols; k++) {
+                cell_result += (*matrix_A)(i,k) * (*matrix_B)(k,j);
             }
-            result->setMatrixValue(i*num_cols+j, cell_result);
+            (*result)(i,j) = cell_result;
+        }
+    }
+
+    return result;
+}
+
+Matrix *Matrix::line_multiply(Matrix *matrix_A, Matrix *matrix_B) {
+    Matrix *result = new Matrix(matrix_A->num_rows, matrix_B->num_cols);
+    fillZeros(result);
+
+    for(size_t i=0; i<matrix_A->num_rows; i++) {
+        for(size_t k=0; k<matrix_A->num_cols; k++) {
+            for(size_t j=0; j<matrix_B->num_cols; j++) {
+                (*result)(i,j) += (*matrix_A)(i,k) * (*matrix_B)(k,j);
+            }
         }
     }
 

@@ -28,44 +28,84 @@ int main(int argc, char const *argv[]) {
         exit(1);
 
     Matrix *matrix_A = new Matrix(size_A, size_A);
-    matrix_A->fill();
+    matrix_A->fill(matrix_A);
 
     Matrix *matrix_B = new Matrix(size_B, size_B);
-    matrix_B->fill();
+    matrix_B->fill(matrix_B);
+
+    cout << "--- Basic Multiplication ---" << endl << endl;
 
     papi.Start();
 
     // Gets the start time in clock cycles
-    long start_cycles = papi.GetRealCycles();
+    long basic_start_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long start_usec = papi.GetRealuSec();
+    long basic_start_usec = papi.GetRealuSec();
 
-    Matrix *result = matrix_A->basic_multiply(matrix_B);
+    Matrix *basic_result = matrix_A->basic_multiply(matrix_A, matrix_B);
 
     // Gets the end time in clock cycles
-    long end_cycles = papi.GetRealCycles();
+    long basic_end_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long end_usec = papi.GetRealuSec();
+    long basic_end_usec = papi.GetRealuSec();
 
     papi.StopAndReset();
 
     cout << setw(8) << "" << setw(15) << "CLOCK CYCLES"
                           << setw(10) << "SECONDS" << endl;
-    cout << setw(8) << "TIME" << setw(15) << (end_cycles - start_cycles)
-                              << setw(10) << (end_usec - start_usec)*pow(10,-6) << endl;
+    cout << setw(8) << "TIME" << setw(15) << (basic_end_cycles - basic_start_cycles)
+                              << setw(10) << (basic_end_usec - basic_start_usec)*pow(10,-6) << endl;
 
     cout << endl;
 
+    cout << "--- Line Multiplication ---" << endl << endl;
+
+    papi.Start();
+
+    // Gets the start time in clock cycles
+    long line_start_cycles = papi.GetRealCycles();
+
+    // Gets the start time in microseconds cycles
+    long line_start_usec = papi.GetRealuSec();
+
+    Matrix *line_result = matrix_A->line_multiply(matrix_A, matrix_B);
+
+    // Gets the end time in clock cycles
+    long line_end_cycles = papi.GetRealCycles();
+
+    // Gets the start time in microseconds cycles
+    long line_end_usec = papi.GetRealuSec();
+
+    papi.StopAndReset();
+
+    cout << setw(8) << "" << setw(15) << "CLOCK CYCLES"
+                          << setw(10) << "SECONDS" << endl;
+    cout << setw(8) << "TIME" << setw(15) << (line_end_cycles - line_start_cycles)
+         << setw(10) << (line_end_usec - line_start_usec)*pow(10,-6) << endl;
+
+    cout << endl;
+
+    cout << "CYCLES" << endl;
+    cout << "basic - line = " 
+         << (basic_end_cycles - basic_start_cycles) - (line_end_cycles - line_start_cycles)
+         << endl;
+
+    cout << "SECONDS" << endl;
+    cout << "basic - line = "
+         << (basic_end_usec - basic_start_usec)*pow(10,-6) - (line_end_usec - line_start_usec)*pow(10,-6)
+         << endl;
 
     // Test Matrix Values
     /*cout << "Matrix A" << endl;
-    matrix_A->print();
+    matrix_A->print(matrix_A);
     cout << "Matrix B" << endl;
-    matrix_B->print();
-    cout << "Matrix AxB" << endl;
-    result->print();*/
+    matrix_A->print(matrix_B);
+    cout << "Matrix AxB [BASIC]" << endl;
+    matrix_A->print(basic_result);
+    cout << "Matrix AxB [LINE]" << endl;
+    matrix_A->print(line_result);*/
 
     return 0;
 }
