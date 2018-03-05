@@ -26,7 +26,7 @@ public:
     void fillZeros();
     void print();
 
-    Matrix *multiply(Matrix *matrix_B);
+    Matrix *basic_multiply(Matrix *matrix_B);
 };
 
 #endif // MATRIX_HPP_

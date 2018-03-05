@@ -70,7 +70,7 @@ void Matrix::print() {
     cout << endl;
 }
 
-Matrix *Matrix::multiply(Matrix *matrix_B) {
+Matrix *Matrix::basic_multiply(Matrix *matrix_B) {
     Matrix *result = new Matrix(num_rows, matrix_B->num_cols);
     result->fillZeros();
 

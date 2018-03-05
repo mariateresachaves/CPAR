@@ -1,5 +1,5 @@
 #include "matrix.hpp"
-#include "papic.hpp"
+#include "papi.hpp"
 
 #include <iostream>
 #include <cstdlib>
@@ -15,11 +15,10 @@ static bool right_sizes(char const *argv[]);
 
 
 int main(int argc, char const *argv[]) {
-    PapiC papi = PapiC();
+    Papi papi = Papi();
 
     papi.Init();
     papi.InstallEvents();
-
 
     if(!right_args(argc, argv))
         exit(1);
@@ -37,7 +36,7 @@ int main(int argc, char const *argv[]) {
 
     papi.Start();
 
-    Matrix *result = matrix_A->multiply(matrix_B);
+    Matrix *result = matrix_A->basic_multiply(matrix_B);
 
     papi.StopAndReset();
 
