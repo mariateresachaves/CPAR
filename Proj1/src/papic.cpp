@@ -7,133 +7,149 @@
 using namespace std;
 
 
-PapiC::PapiC() { event_set = PAPI_NULL; }
+PapiC::PapiC() { eventset = PAPI_NULL; }
 
 PapiC::~PapiC() { this->Destroy(); }
 
 int PapiC::Init() {
-    int ret = PAPI_library_init(static_cast<int>(PAPI_VER_CURRENT));
+    // Initialize the library
+    int retval = PAPI_library_init(static_cast<int>(PAPI_VER_CURRENT));
 
-    if(ret != static_cast<int>(PAPI_VER_CURRENT) && ret < 0)
-        cerr << "[Runtime_Error] PAPI_library_init" << endl;
-
-    if (ret < 0) {
-        fprintf(stderr, "[Runtime_Error] PAPI_library_init %d: %s\n", ret,
-            PAPI_strerror(ret));
-        cerr << "[Runtime_Error] PAPI_library_init" << endl;
+    if(retval != static_cast<int>(PAPI_VER_CURRENT) && retval < 0) {
+        cerr << "[Runtime_Error] PAPI library init error" << endl;
+        exit(1);
     }
 
-    cout << "PAPI Version Number: MAJOR: " << PAPI_VERSION_MAJOR(ret)
-         << "\t MINOR: " << PAPI_VERSION_MINOR(ret)
-         << "\t REVISION: " << PAPI_VERSION_REVISION(ret) << endl;
+    if (retval < 0) {
+        fprintf(stderr, "[Runtime_Error] PAPI library init error %d: %s\n", retval,
+            PAPI_strerror(retval));
+        cerr << "[Runtime_Error] PAPI library init error" << endl;
+        exit(1);
+    }
 
-    return ret;
+    cout << setw(23) << "" << setw(10) << "MAJOR"
+                     << setw(10) << "MINOR"
+                     << setw(10) << "REVISION" << endl;
+    cout << setw(23) << "PAPI Version Number"
+                     << setw(10) << PAPI_VERSION_MAJOR(retval)
+                     << setw(10) << PAPI_VERSION_MINOR(retval)
+                     << setw(10) << PAPI_VERSION_REVISION(retval) << endl;
+    cout << endl;
+
+    return retval;
 }
 
 int PapiC::InstallEvents() {
     this->Destroy();
 
-    int ret = PAPI_create_eventset(&event_set);
+    int retval = PAPI_create_eventset(&eventset);
 
-    if(ret != PAPI_OK) {
-        event_set = PAPI_NULL;
-        return ret;
+    if(retval != PAPI_OK) {
+        eventset = PAPI_NULL;
+        return retval;
     }
 
-    ret = AddEvent(PAPI_L1_DCM);
-    if(ret != PAPI_OK)
-        return ret;
+    // Level 1 data cache misses
+    retval = AddEvent(PAPI_L1_DCM);
+    if(retval != PAPI_OK)
+        return retval;
 
-    ret = AddEvent(PAPI_L1_ICM);
-    if(ret != PAPI_OK)
-        return ret;
+    // Level 1 instruction cache misses
+    retval = AddEvent(PAPI_L1_ICM);
+    if(retval != PAPI_OK)
+        return retval;
 
-    ret = AddEvent(PAPI_L1_TCM);
-    if(ret != PAPI_OK)
-        return ret;
+    // Level 1 total cache misses
+    retval = AddEvent(PAPI_L1_TCM);
+    if(retval != PAPI_OK)
+        return retval;
 
+    // Level 2 data cache misses
+    retval = AddEvent(PAPI_L2_DCM);
+    if(retval != PAPI_OK)
+        return retval;
 
-    ret = AddEvent(PAPI_L2_DCM);
-    if(ret != PAPI_OK)
-        return ret;
+    // Level 2 instruction cache misses
+    retval = AddEvent(PAPI_L2_ICM);
+    if(retval != PAPI_OK)
+        return retval;
 
-    ret = AddEvent(PAPI_L2_ICM);
-    if(ret != PAPI_OK)
-        return ret;
+    // Level 2 total cache misses
+    retval = AddEvent(PAPI_L2_TCM);
+    if(retval != PAPI_OK)
+        return retval;
 
-    ret = AddEvent(PAPI_L2_TCM);
-    if(ret != PAPI_OK)
-        return ret;
+    // L3 D Cache Access
+    retval = AddEvent(PAPI_L3_DCA);
+    if(retval != PAPI_OK)
+        return retval;
 
+    // L3 instruction cache accesses
+    retval = AddEvent(PAPI_L3_ICA);
+    if(retval != PAPI_OK)
+        return retval;
 
-    ret = AddEvent(PAPI_L3_DCA);
-    if(ret != PAPI_OK)
-        return ret;
+    // Total instructions executed
+    retval = AddEvent(PAPI_TOT_INS);
+    if(retval != PAPI_OK)
+        return retval;
 
-
-    ret = AddEvent(PAPI_L3_ICA);
-    if(ret != PAPI_OK)
-        return ret;
-
-    ret = AddEvent(PAPI_TOT_INS);
-    if(ret != PAPI_OK)
-        return ret;
-
-    return ret;
+    return retval;
 }
 
 int PapiC::Start() {
-    int ret = PAPI_start(event_set);
-    if(ret != PAPI_OK)
-        cerr << "[Fail] PAPI_start" << endl;
+    int retval = PAPI_start(eventset);
 
-    return ret;
+    if(retval != PAPI_OK)
+        cerr << "[Fail] PAPI start" << endl;
+
+    return retval;
 }
 
 int PapiC::StopAndReset() {
     auto values = make_unique<long long[]>(installed_events.size());
 
-    int ret = PAPI_stop(event_set, values.get());
-    if(ret != PAPI_OK)
-        cerr << "[Fail] PAPI_stop" << endl;
+    int retval = PAPI_stop(eventset, values.get());
+    if(retval != PAPI_OK)
+        cerr << "[Fail] PAPI stop" << endl;
     else
         PrintCounters(values.get());
 
-    ret = PAPI_reset(event_set);
-    if(ret != PAPI_OK)
-        cerr << "[Fail] PAPI_reset" << endl;
+    retval = PAPI_reset(eventset);
+    if(retval != PAPI_OK)
+        cerr << "[Fail] PAPI reset" << endl;
 
-    return ret;
+    return retval;
 }
 
 int PapiC::Destroy() {
-    if(event_set == PAPI_NULL)
+    if(eventset == PAPI_NULL)
         return PAPI_OK;
 
     char event_name[PAPI_MAX_STR_LEN];
     for(const int &event_id : installed_events) {
-        int ret = PAPI_remove_event(event_set, event_id);
+        int retval = PAPI_remove_event(eventset, event_id);
 
-        if(ret != PAPI_OK) {
+        if(retval != PAPI_OK) {
             PAPI_event_code_to_name(event_id, event_name);
 
             cerr << "[Fail] " << event_name << endl;
         }
     }
 
-    int ret = PAPI_destroy_eventset(&event_set);
-    if(ret != PAPI_OK)
-        cerr << "[Fail] PAPI_destroy_eventset" << endl;
+    int retval = PAPI_destroy_eventset(&eventset);
+    if(retval != PAPI_OK)
+        cerr << "[Fail] PAPI destroy eventset" << endl;
     else
-        event_set = PAPI_NULL;
+        eventset = PAPI_NULL;
 
-    return ret;
+    return retval;
 }
 
 int PapiC::AddEvent(int event_id) {
-    int ret = PAPI_add_event(event_set, event_id);
+    int retval = PAPI_add_event(eventset, event_id);
 
-    if(ret == PAPI_OK)
+    if(retval == PAPI_OK)
         installed_events.push_back(event_id);
 
     else {
@@ -143,15 +159,18 @@ int PapiC::AddEvent(int event_id) {
         fprintf(stderr, "[Fail] AddEvent %s\n", event_name);
     }
 
-    return ret;
+    return retval;
 }
 
 void PapiC::PrintCounters(long long *values) {
     char event_name[PAPI_MAX_STR_LEN];
     size_t event_index = 0;
 
+    cout << setw(15) << "Event Name" << setw(15) << "Value" << endl << endl;
+
     for(; event_index < installed_events.size(); ++event_index) {
         PAPI_event_code_to_name(installed_events[event_index], event_name);
-        cout << event_name << ": " << values[event_index] << endl;
+        cout << setw(15) << event_name << setw(15) << values[event_index] << endl;
     }
+
 }

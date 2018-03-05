@@ -2,12 +2,13 @@
 #define PAPIC_HPP_
 
 #include <vector>
+#include <iomanip>
 
 
 class PapiC {
  private:
   std::vector<int> installed_events;
-  int event_set;
+  int eventset;
 
  public:
   PapiC();

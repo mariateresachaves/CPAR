@@ -87,7 +87,9 @@ Matrix *Matrix::multiply(Matrix *matrix_B) {
     }
 
     clock_t end = clock();
-    cout << "TIME [seconds]: " << (end-begin)/double(CLOCKS_PER_SEC) << endl;
+    cout << setw(25) << "TIME TO RUN [seconds]"
+         << setw(10) << (end-begin)/double(CLOCKS_PER_SEC) << endl;
+    cout << endl;
 
     return result;
 }
