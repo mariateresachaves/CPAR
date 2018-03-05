@@ -38,18 +38,18 @@ int main(int argc, char const *argv[]) {
     papi.Start();
 
     // Gets the start time in clock cycles
-    long basic_start_cycles = papi.GetRealCycles();
+    long long basic_start_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long basic_start_usec = papi.GetRealuSec();
+    long long basic_start_usec = papi.GetRealuSec();
 
     Matrix *basic_result = matrix_A->basic_multiply(matrix_A, matrix_B);
 
     // Gets the end time in clock cycles
-    long basic_end_cycles = papi.GetRealCycles();
+    long long basic_end_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long basic_end_usec = papi.GetRealuSec();
+    long long basic_end_usec = papi.GetRealuSec();
 
     papi.StopAndReset();
 
@@ -65,18 +65,18 @@ int main(int argc, char const *argv[]) {
     papi.Start();
 
     // Gets the start time in clock cycles
-    long line_start_cycles = papi.GetRealCycles();
+    long long line_start_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long line_start_usec = papi.GetRealuSec();
+    long long line_start_usec = papi.GetRealuSec();
 
     Matrix *line_result = matrix_A->line_multiply(matrix_A, matrix_B);
 
     // Gets the end time in clock cycles
-    long line_end_cycles = papi.GetRealCycles();
+    long long line_end_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long line_end_usec = papi.GetRealuSec();
+    long long line_end_usec = papi.GetRealuSec();
 
     papi.StopAndReset();
 
@@ -86,16 +86,6 @@ int main(int argc, char const *argv[]) {
          << setw(10) << (line_end_usec - line_start_usec)*pow(10,-6) << endl;
 
     cout << endl;
-
-    cout << "CYCLES" << endl;
-    cout << "basic - line = " 
-         << (basic_end_cycles - basic_start_cycles) - (line_end_cycles - line_start_cycles)
-         << endl;
-
-    cout << "SECONDS" << endl;
-    cout << "basic - line = "
-         << (basic_end_usec - basic_start_usec)*pow(10,-6) - (line_end_usec - line_start_usec)*pow(10,-6)
-         << endl;
 
     // Test Matrix Values
     /*cout << "Matrix A" << endl;

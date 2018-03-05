@@ -337,11 +337,11 @@ int Papi::Destroy() {
 }
 
 // Gets the time in clock cycles
-long Papi::GetRealCycles() {
+long long Papi::GetRealCycles() {
     return PAPI_get_real_cyc();
 }
 
-long Papi::GetRealuSec() {
+long long Papi::GetRealuSec() {
     return PAPI_get_real_usec();
 }
 
@@ -365,11 +365,11 @@ void Papi::PrintCounters(long long *values) {
     char event_name[PAPI_MAX_STR_LEN];
     size_t event_index = 0;
 
-    cout << setw(15) << "Event Name" << setw(15) << "Value" << endl << endl;
+    cout << setw(15) << left <<  "Event Name" << setw(15) << left << "Value" << endl << endl;
 
     for(; event_index < installed_events.size(); ++event_index) {
         PAPI_event_code_to_name(installed_events[event_index], event_name);
-        cout << setw(15) << event_name << setw(15) << values[event_index] << endl;
+        cout << setw(15) << left << event_name << setw(15) << left << values[event_index] << endl;
     }
 
     cout << endl;

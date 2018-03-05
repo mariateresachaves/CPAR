@@ -18,8 +18,8 @@ class Papi {
   int Start();
   int StopAndReset();
   int Destroy();
-  long GetRealCycles();
-  long GetRealuSec();
+  long long GetRealCycles();
+  long long GetRealuSec();
 
  private:
   int AddEvent(int);
