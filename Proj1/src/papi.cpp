@@ -66,7 +66,7 @@ int Papi::InstallEvents() {
     // Level 2 data cache misses
     retval = AddEvent(PAPI_L2_DCM);
     if(retval != PAPI_OK)
-        return retval;Counters
+        return retval;
 
     // Level 2 instruction cache misses
     retval = AddEvent(PAPI_L2_ICM);
@@ -145,6 +145,15 @@ int Papi::Destroy() {
     return retval;
 }
 
+// Gets the time in clock cycles
+long Papi::GetRealCycles() {
+    return PAPI_get_real_cyc();
+}
+
+long Papi::GetRealuSec() {
+    return PAPI_get_real_usec();
+}
+
 int Papi::AddEvent(int event_id) {
     int retval = PAPI_add_event(eventset, event_id);
 
@@ -172,4 +181,5 @@ void Papi::PrintCounters(long long *values) {
         cout << setw(15) << event_name << setw(15) << values[event_index] << endl;
     }
 
+    cout << endl;
 }

@@ -74,8 +74,6 @@ Matrix *Matrix::basic_multiply(Matrix *matrix_B) {
     Matrix *result = new Matrix(num_rows, matrix_B->num_cols);
     result->fillZeros();
 
-    clock_t begin = clock();
-
     for(size_t i=0; i<num_cols; i++) {
         for(size_t j=0; j<num_cols; j++) {
             int cell_result = 0;
@@ -85,11 +83,6 @@ Matrix *Matrix::basic_multiply(Matrix *matrix_B) {
             result->setMatrixValue(i*num_cols+j, cell_result);
         }
     }
-
-    clock_t end = clock();
-    cout << setw(25) << "TIME TO RUN [seconds]"
-         << setw(10) << (end-begin)/double(CLOCKS_PER_SEC) << endl;
-    cout << endl;
 
     return result;
 }

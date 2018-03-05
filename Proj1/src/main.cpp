@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
+#include <math.h>
 
 using namespace std;
 
@@ -26,8 +27,6 @@ int main(int argc, char const *argv[]) {
     if(!right_sizes(argv))
         exit(1);
 
-
-
     Matrix *matrix_A = new Matrix(size_A, size_A);
     matrix_A->fill();
 
@@ -36,9 +35,29 @@ int main(int argc, char const *argv[]) {
 
     papi.Start();
 
+    // Gets the start time in clock cycles
+    long start_cycles = papi.GetRealCycles();
+
+    // Gets the start time in microseconds cycles
+    long start_usec = papi.GetRealuSec();
+
     Matrix *result = matrix_A->basic_multiply(matrix_B);
 
+    // Gets the end time in clock cycles
+    long end_cycles = papi.GetRealCycles();
+
+    // Gets the start time in microseconds cycles
+    long end_usec = papi.GetRealuSec();
+
     papi.StopAndReset();
+
+    cout << setw(8) << "" << setw(15) << "CLOCK CYCLES"
+                          << setw(10) << "SECONDS" << endl;
+    cout << setw(8) << "TIME" << setw(15) << (end_cycles - start_cycles)
+                              << setw(10) << (end_usec - start_usec)*pow(10,-6) << endl;
+
+    cout << endl;
+
 
     // Test Matrix Values
     /*cout << "Matrix A" << endl;
