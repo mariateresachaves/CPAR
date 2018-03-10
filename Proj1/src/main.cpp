@@ -5,6 +5,10 @@
 #include <cstdlib>
 #include <sstream>
 #include <math.h>
+#include <ctime>
+
+#define M 1000000
+#define MX 1024
 
 using namespace std;
 
@@ -27,13 +31,17 @@ int main(int argc, char const *argv[]) {
     if(!right_sizes(argv))
         exit(1);
 
+    float tot_FLOPS = 2*MX*MX*size_A;
+
     Matrix *matrix_A = new Matrix(size_A, size_A);
     matrix_A->fill(matrix_A);
 
     Matrix *matrix_B = new Matrix(size_B, size_B);
     matrix_B->fill(matrix_B);
 
-    cout << "--- Basic Multiplication ---" << endl << endl;
+    cout << "Basic Multiplication" << endl;
+
+    clock_t begin = clock();
 
     papi.Start();
 
@@ -43,7 +51,8 @@ int main(int argc, char const *argv[]) {
     // Gets the start time in microseconds cycles
     long long basic_start_usec = papi.GetRealuSec();
 
-    Matrix *basic_result = matrix_A->basic_multiply(matrix_A, matrix_B);
+    // Matrix *basic_result = matrix_A->basic_multiply(matrix_A, matrix_B);
+    matrix_A->basic_multiply(matrix_A, matrix_B);
 
     // Gets the end time in clock cycles
     long long basic_end_cycles = papi.GetRealCycles();
@@ -53,14 +62,18 @@ int main(int argc, char const *argv[]) {
 
     papi.StopAndReset();
 
-    cout << setw(8) << "" << setw(15) << "CLOCK CYCLES"
-                          << setw(10) << "SECONDS" << endl;
-    cout << setw(8) << "TIME" << setw(15) << (basic_end_cycles - basic_start_cycles)
-                              << setw(10) << (basic_end_usec - basic_start_usec)*pow(10,-6) << endl;
+    clock_t end = clock();
 
-    cout << endl;
+    cout << "MFlop/s = " << (tot_FLOPS/M)/(end-begin) << endl
+         << "Time (clock cycles) = "
+         << (basic_end_cycles - basic_start_cycles) << endl
+         << "Time (seconds) = "
+         << (basic_end_usec - basic_start_usec)*pow(10,-6) << endl
+         << endl;
 
-    cout << "--- Line Multiplication ---" << endl << endl;
+    cout << "Line Multiplication" << endl;
+
+    clock_t begin2 = clock();
 
     papi.Start();
 
@@ -70,7 +83,8 @@ int main(int argc, char const *argv[]) {
     // Gets the start time in microseconds cycles
     long long line_start_usec = papi.GetRealuSec();
 
-    Matrix *line_result = matrix_A->line_multiply(matrix_A, matrix_B);
+    //Matrix *line_result = matrix_A->line_multiply(matrix_A, matrix_B);
+    matrix_A->line_multiply(matrix_A, matrix_B);
 
     // Gets the end time in clock cycles
     long long line_end_cycles = papi.GetRealCycles();
@@ -80,12 +94,14 @@ int main(int argc, char const *argv[]) {
 
     papi.StopAndReset();
 
-    cout << setw(8) << "" << setw(15) << "CLOCK CYCLES"
-                          << setw(10) << "SECONDS" << endl;
-    cout << setw(8) << "TIME" << setw(15) << (line_end_cycles - line_start_cycles)
-         << setw(10) << (line_end_usec - line_start_usec)*pow(10,-6) << endl;
+    clock_t end2 = clock();
 
-    cout << endl;
+    cout << "MFlop/s = " << (tot_FLOPS/M)/(end2-begin2) << endl
+         << "Time (clock cycles) = "
+         << (line_end_cycles - line_start_cycles) << endl
+         << "Time (seconds) = "
+         << (line_end_usec - line_start_usec)*pow(10,-6) << endl
+         << endl;
 
     // Test Matrix Values
     /*cout << "Matrix A" << endl;

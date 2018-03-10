@@ -2,13 +2,16 @@
 #define PAPI_HPP_
 
 #include <vector>
-#include <iomanip>
+#include <papi.h>
+#include <iostream>
+#include <memory>
 
 
 class Papi {
  private:
   std::vector<int> installed_events;
   int eventset;
+  int event_independent;
 
  public:
   Papi();

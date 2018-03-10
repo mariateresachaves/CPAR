@@ -17,11 +17,11 @@ LIBS = -L/opt/papi/lib -lpapi
 
 ./tmp/%.o: src/%
 	mkdir -p ./tmp
-	$(CC) $(INCLUDES) -c $< -o $@
+	$(CC) $(INCLUDES) -c $< -o $@ -O3 -s -Wall -Wdisabled-optimization
 
 $(OUT): $(OBJ)
 	mkdir -p bin
-	$(CC) $(INCLUDES) $(OBJ) $(LIBS) -o $(OUT)
+	$(CC) $(INCLUDES) $(OBJ) $(LIBS) -o $(OUT) -O3 -s -Wall -Wdisabled-optimization
 
 clean:
 	rm -f $(OBJ) $(OUT)

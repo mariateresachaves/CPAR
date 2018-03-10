@@ -1,9 +1,5 @@
 #include "papi.hpp"
 
-#include <papi.h>
-#include <iostream>
-#include <memory>
-
 using namespace std;
 
 
@@ -39,8 +35,23 @@ int Papi::InstallEvents() {
         return retval;
     }
 
+    // Level 1 cache misses
+    retval = AddEvent(PAPI_L1_TCM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Level 2 cache misses
+    retval = AddEvent(PAPI_L2_TCM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Total instructions executed
+    retval = AddEvent(PAPI_TOT_INS);
+    if(retval != PAPI_OK)
+        return retval;
+
     // Level 1 data cache misses
-    retval = AddEvent(PAPI_L1_DCM);
+    /*retval = AddEvent(PAPI_L1_DCM);
     if(retval != PAPI_OK)
         return retval;
 
@@ -59,18 +70,8 @@ int Papi::InstallEvents() {
     if(retval != PAPI_OK)
         return retval;
 
-    // Level 1 cache misses
-    retval = AddEvent(PAPI_L1_TCM);
-    if(retval != PAPI_OK)
-        return retval;
-
-    // Level 2 cache misses
-    retval = AddEvent(PAPI_L2_TCM);
-    if(retval != PAPI_OK)
-        return retval;
-
-    // Total instructions executed
-    retval = AddEvent(PAPI_TOT_INS);
+    // Floating point operations executed
+    retval = AddEvent(PAPI_FP_OPS);
     if(retval != PAPI_OK)
         return retval;
 
@@ -104,10 +105,8 @@ int Papi::InstallEvents() {
     if(retval != PAPI_OK)
         return retval;
 
-    // INDEPENDENT
-
     // Level 3 total cache misses
-    /*retval = AddEvent(PAPI_L3_TCM);
+    retval = AddEvent(PAPI_L3_TCM);
     if(retval != PAPI_OK)
         return retval;
 
@@ -259,15 +258,10 @@ int Papi::InstallEvents() {
     // FD ins
     retval = AddEvent(PAPI_FDV_INS);
     if(retval != PAPI_OK)
-        return retval;
-
-    // Floating point operations executed
-    retval = AddEvent(PAPI_FP_OPS);
-    if(retval != PAPI_OK)
-        return retval;
+        return retval;*/
 
     // Floating point operations executed; optimized to count scaled single precision vector operations
-    retval = AddEvent(PAPI_SP_OPS);
+    /*retval = AddEvent(PAPI_SP_OPS);
     if(retval != PAPI_OK)
         return retval;
 
@@ -367,12 +361,8 @@ void Papi::PrintCounters(long long *values) {
     char event_name[PAPI_MAX_STR_LEN];
     size_t event_index = 0;
 
-    cout << setw(15) << left <<  "Event Name" << setw(15) << left << "Value" << endl << endl;
-
     for(; event_index < installed_events.size(); ++event_index) {
         PAPI_event_code_to_name(installed_events[event_index], event_name);
-        cout << setw(15) << left << event_name << setw(15) << left << values[event_index] << endl;
+        cout << event_name << " = " << values[event_index] << endl;
     }
-
-    cout << endl;
 }
