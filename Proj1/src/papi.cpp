@@ -69,100 +69,10 @@ int Papi::InstallEvents() {
     if(retval != PAPI_OK)
         return retval;
 
-    // Level 3 total cache misses
-    /*retval = AddEvent(PAPI_L3_TCM);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Data translation lookaside buffer misses
-    /*retval = AddEvent(PAPI_TLB_DM);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Instr translation lookaside buffer misses
-    /*retval = AddEvent(PAPI_TLB_IM);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Level 1 load misses
-    /*retval = AddEvent(PAPI_L1_LDM);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Level 1 store misses
-    /*retval = AddEvent(PAPI_L1_STM);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Level 2 store misses
-    /*retval = AddEvent(PAPI_L2_STM);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Cycles with No Instruction Issue
-    /*retval = AddEvent(PAPI_STL_ICY);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Unconditional branch instructions executed
-    /*retval = AddEvent(PAPI_BR_UCN);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Conditional branch instructions executed
-    /*retval = AddEvent(PAPI_BR_CN);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Conditional branch instructions taken
-    /*retval = AddEvent(PAPI_BR_TKN);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Conditional branch instructions not taken
-    /*retval = AddEvent(PAPI_BR_NTK);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Conditional branch instructions mispred
-    /*retval = AddEvent(PAPI_BR_MSP);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Conditional branch instructions corr. pred
-    /*retval = AddEvent(PAPI_BR_PRC);
-    if(retval != PAPI_OK)
-        return retval;*/
-
     // Total instructions executed
     retval = AddEvent(PAPI_TOT_INS);
     if(retval != PAPI_OK)
         return retval;
-
-    // Floating point instructions executed
-    /*retval = AddEvent(PAPI_FP_INS);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Load instructions executed
-    /*retval = AddEvent(PAPI_LD_INS);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Store instructions executed
-    /*retval = AddEvent(PAPI_SR_INS);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Total cycles executed
-    /*retval = AddEvent(PAPI_TOT_CYC);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L2 D Cache Hit
-    /*retval = AddEvent(PAPI_L2_DCH);
-    if(retval != PAPI_OK)
-        return retval;*/
 
     // L2 D Cache Access
     retval = AddEvent(PAPI_L2_DCA);
@@ -174,115 +84,207 @@ int Papi::InstallEvents() {
     if(retval != PAPI_OK)
         return retval;
 
-    // L2 D Cache Read
-    /*retval = AddEvent(PAPI_L2_DCR);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L3 D Cache Read
-    /*retval = AddEvent(PAPI_L3_DCR);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L2 D Cache Write
-    /*retval = AddEvent(PAPI_L2_DCW);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L3 D Cache Write
-    /*retval = AddEvent(PAPI_L3_DCW);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L2 instruction cache hits
-    /*retval = AddEvent(PAPI_L2_ICH);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L2 instruction cache accesses
-    /*retval = AddEvent(PAPI_L2_ICA);
-    if(retval != PAPI_OK)
-        return retval;*/
-
     // L3 instruction cache accesses
     retval = AddEvent(PAPI_L3_ICA);
     if(retval != PAPI_OK)
         return retval;
-
-    // L2 instruction cache reads
-    /*retval = AddEvent(PAPI_L2_ICR);
-    if(retval != PAPI_OK)
-        return retval;*/
 
     // L3 instruction cache reads
     retval = AddEvent(PAPI_L3_ICR);
     if(retval != PAPI_OK)
         return retval;
 
-    // L2 total cache accesses
-    /*retval = AddEvent(PAPI_L2_TCA);
-    if(retval != PAPI_OK)
-        return retval;*/
-
     // L3 total cache accesses
     retval = AddEvent(PAPI_L3_TCA);
     if(retval != PAPI_OK)
         return retval;
 
-    // L2 total cache reads
-    /*retval = AddEvent(PAPI_L2_TCR);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L3 total cache reads
-    /*retval = AddEvent(PAPI_L3_TCR);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L2 total cache writes
-    /*retval = AddEvent(PAPI_L2_TCW);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // L3 total cache writes
-    /*retval = AddEvent(PAPI_L3_TCW);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // FD ins
-    /*retval = AddEvent(PAPI_FDV_INS);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Floating point operations executed
-    /*retval = AddEvent(PAPI_FP_OPS);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Floating point operations executed; optimized to count scaled single precision vector operations
-    /*retval = AddEvent(PAPI_SP_OPS);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Floating point operations executed; optimized to count scaled double precision vector operations
-    /*retval = AddEvent(PAPI_DP_OPS);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Single precision vector/SIMD instructions
-    /*retval = AddEvent(PAPI_VEC_SP);
-    if(retval != PAPI_OK)
-        return retval;*/
-
-    // Double precision vector/SIMD instructions
-    /*retval = AddEvent(PAPI_VEC_DP);
-    if(retval != PAPI_OK)
-        return retval;*/
-
     // Reference clock cycles
     retval = AddEvent(PAPI_REF_CYC);
     if(retval != PAPI_OK)
         return retval;
+
+    // INDEPENDENT
+
+    // Level 3 total cache misses
+    /*retval = AddEvent(PAPI_L3_TCM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Data translation lookaside buffer misses
+    retval = AddEvent(PAPI_TLB_DM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Instr translation lookaside buffer misses
+    retval = AddEvent(PAPI_TLB_IM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Level 1 load misses
+    retval = AddEvent(PAPI_L1_LDM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Level 1 store misses
+    retval = AddEvent(PAPI_L1_STM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Level 2 store misses
+    retval = AddEvent(PAPI_L2_STM);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Cycles with No Instruction Issue
+    retval = AddEvent(PAPI_STL_ICY);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Unconditional branch instructions executed
+    retval = AddEvent(PAPI_BR_UCN);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Conditional branch instructions executed
+    retval = AddEvent(PAPI_BR_CN);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Conditional branch instructions taken
+    retval = AddEvent(PAPI_BR_TKN);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Conditional branch instructions not taken
+    retval = AddEvent(PAPI_BR_NTK);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Conditional branch instructions mispred
+    retval = AddEvent(PAPI_BR_MSP);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Conditional branch instructions corr. pred
+    retval = AddEvent(PAPI_BR_PRC);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Floating point instructions executed
+    retval = AddEvent(PAPI_FP_INS);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Load instructions executed
+    retval = AddEvent(PAPI_LD_INS);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Store instructions executed
+    retval = AddEvent(PAPI_SR_INS);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Total cycles executed
+    retval = AddEvent(PAPI_TOT_CYC);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 D Cache Hit
+    retval = AddEvent(PAPI_L2_DCH);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 D Cache Read
+    retval = AddEvent(PAPI_L2_DCR);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L3 D Cache Read
+    retval = AddEvent(PAPI_L3_DCR);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 D Cache Write
+    retval = AddEvent(PAPI_L2_DCW);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L3 D Cache Write
+    retval = AddEvent(PAPI_L3_DCW);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 instruction cache hits
+    retval = AddEvent(PAPI_L2_ICH);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 instruction cache accesses
+    retval = AddEvent(PAPI_L2_ICA);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 instruction cache reads
+    retval = AddEvent(PAPI_L2_ICR);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 total cache accesses
+    retval = AddEvent(PAPI_L2_TCA);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 total cache reads
+    retval = AddEvent(PAPI_L2_TCR);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L3 total cache reads
+    retval = AddEvent(PAPI_L3_TCR);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L2 total cache writes
+    retval = AddEvent(PAPI_L2_TCW);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // L3 total cache writes
+    retval = AddEvent(PAPI_L3_TCW);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // FD ins
+    retval = AddEvent(PAPI_FDV_INS);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Floating point operations executed
+    retval = AddEvent(PAPI_FP_OPS);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Floating point operations executed; optimized to count scaled single precision vector operations
+    retval = AddEvent(PAPI_SP_OPS);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Floating point operations executed; optimized to count scaled double precision vector operations
+    retval = AddEvent(PAPI_DP_OPS);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Single precision vector/SIMD instructions
+    retval = AddEvent(PAPI_VEC_SP);
+    if(retval != PAPI_OK)
+        return retval;
+
+    // Double precision vector/SIMD instructions
+    retval = AddEvent(PAPI_VEC_DP);
+    if(retval != PAPI_OK)
+        return retval;*/
 
     return retval;
 }
