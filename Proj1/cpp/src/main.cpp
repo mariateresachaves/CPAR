@@ -14,10 +14,23 @@ using namespace std;
 
 size_t size_A;
 size_t size_B;
+int algorithm;
+
+float tot_FLOPS;
+
+clock_t begin_time;
+clock_t end_time;
+
+long long start_cycles;
+long long end_cycles;
+
+long long start_usec;
+long long end_usec;
 
 static bool right_args(int argc, char const *argv[]);
 static bool right_sizes(char const *argv[]);
-
+static bool right_algorithm(char const *argv[]);
+static void printTimes();
 
 int main(int argc, char const *argv[]) {
     Papi papi = Papi();
@@ -29,9 +42,12 @@ int main(int argc, char const *argv[]) {
         exit(1);
 
     if(!right_sizes(argv))
-        exit(1);
+        exit(2);
 
-    float tot_FLOPS = 2*MX*MX*size_A;
+    if(!right_algorithm(argv))
+        exit(3);
+
+    tot_FLOPS = 2*MX*MX*size_A;
 
     Matrix *matrix_A = new Matrix(size_A, size_A);
     matrix_A->fill(matrix_A);
@@ -39,69 +55,45 @@ int main(int argc, char const *argv[]) {
     Matrix *matrix_B = new Matrix(size_B, size_B);
     matrix_B->fill(matrix_B);
 
-    cout << "Basic Multiplication" << endl;
-
-    clock_t begin = clock();
+    begin_time = clock();
 
     papi.Start();
 
     // Gets the start time in clock cycles
-    long long basic_start_cycles = papi.GetRealCycles();
+    start_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long long basic_start_usec = papi.GetRealuSec();
+    start_usec = papi.GetRealuSec();
 
-    // Matrix *basic_result = matrix_A->basic_multiply(matrix_A, matrix_B);
-    matrix_A->basic_multiply(matrix_A, matrix_B);
+    switch (algorithm) {
+        case 1:
+        cout << "Basic Matrix Multiplication" << endl;
+        // Matrix *basic_result = matrix_A->basic_multiply(matrix_A, matrix_B);
+        matrix_A->basic_multiply(matrix_A, matrix_B);
+        break;
+
+        case 2:
+        cout << "Line Matrix Multiplication" << endl;
+        //Matrix *line_result = matrix_A->line_multiply(matrix_A, matrix_B);
+        matrix_A->line_multiply(matrix_A, matrix_B);
+        break;
+
+        default:
+        cerr << "Invalid Algorithm" << endl;
+        break;
+    }
 
     // Gets the end time in clock cycles
-    long long basic_end_cycles = papi.GetRealCycles();
+    end_cycles = papi.GetRealCycles();
 
     // Gets the start time in microseconds cycles
-    long long basic_end_usec = papi.GetRealuSec();
+    end_usec = papi.GetRealuSec();
 
     papi.StopAndReset();
 
-    clock_t end = clock();
+    end_time = clock();
 
-    cout << "MFlop/s = " << (tot_FLOPS/M)/(end-begin) << endl
-         << "Time (clock cycles) = "
-         << (basic_end_cycles - basic_start_cycles) << endl
-         << "Time (seconds) = "
-         << (basic_end_usec - basic_start_usec)*pow(10,-6) << endl
-         << endl;
-
-    cout << "Line Multiplication" << endl;
-
-    clock_t begin2 = clock();
-
-    papi.Start();
-
-    // Gets the start time in clock cycles
-    long long line_start_cycles = papi.GetRealCycles();
-
-    // Gets the start time in microseconds cycles
-    long long line_start_usec = papi.GetRealuSec();
-
-    //Matrix *line_result = matrix_A->line_multiply(matrix_A, matrix_B);
-    matrix_A->line_multiply(matrix_A, matrix_B);
-
-    // Gets the end time in clock cycles
-    long long line_end_cycles = papi.GetRealCycles();
-
-    // Gets the start time in microseconds cycles
-    long long line_end_usec = papi.GetRealuSec();
-
-    papi.StopAndReset();
-
-    clock_t end2 = clock();
-
-    cout << "MFlop/s = " << (tot_FLOPS/M)/(end2-begin2) << endl
-         << "Time (clock cycles) = "
-         << (line_end_cycles - line_start_cycles) << endl
-         << "Time (seconds) = "
-         << (line_end_usec - line_start_usec)*pow(10,-6) << endl
-         << endl;
+    printTimes();
 
     // Test Matrix Values
     /*cout << "Matrix A" << endl;
@@ -117,10 +109,11 @@ int main(int argc, char const *argv[]) {
 }
 
 static bool right_args(int argc, char const *argv[]) {
-    if(argc != 3) {
+    if(argc != 4) {
         cerr << "[Wrong_Args] usage: " << argv[0] << " "
-             << "<size_matrix_A> <size_matrix_B>" << endl
+             << "<algorithm> <size_matrix_A> <size_matrix_B>" << endl
              << "\t Where:" << endl
+             << "\t\t <algorithm> - type of algorithm to apply" << endl
              << "\t\t <size_matrix_A> - matrix size_matrix_A x size_matrix_A"
              << endl
              << "\t\t <size_matrix_B> - matrix size_matrix_B x size_matrix_B"
@@ -132,8 +125,8 @@ static bool right_args(int argc, char const *argv[]) {
 }
 
 static bool right_sizes(char const *argv[]) {
-    istringstream s_A(argv[1]);
-    istringstream s_B(argv[2]);
+    istringstream s_A(argv[2]);
+    istringstream s_B(argv[3]);
 
     if(!(s_A >> size_A) || !(s_B >> size_B)) {
         cerr
@@ -143,4 +136,26 @@ static bool right_sizes(char const *argv[]) {
     }
 
     return true;
+}
+
+static bool right_algorithm(char const *argv[]) {
+    istringstream s_algorithm(argv[1]);
+
+    if(!(s_algorithm >> algorithm)) {
+        cerr
+            << "[Wrong_Args] <algorithm> must be an integer"
+            << endl;
+        return false;
+    }
+
+    return true;
+}
+
+static void printTimes() {
+    cout << "MFlop/s = " << (tot_FLOPS/M)/(end_time-begin_time) << endl
+         << "Time (clock cycles) = "
+         << (end_cycles - start_cycles) << endl
+         << "Time (seconds) = "
+         << (end_usec - start_usec)*pow(10,-6) << endl
+         << endl;
 }
