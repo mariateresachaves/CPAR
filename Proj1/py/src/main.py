@@ -1,4 +1,5 @@
 import sys
+from matrix import Matrix
 
 size_A = 0
 size_B = 0
@@ -18,6 +19,8 @@ def main():
     else:
         return 2
 
+    matrix_A = Matrix(size_A, size_A)
+    matrix_B = Matrix(size_B, size_B)
 
 def right_args(num_args, argv):
     if num_args != 4:

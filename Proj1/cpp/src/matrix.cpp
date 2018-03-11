@@ -5,12 +5,12 @@ using namespace std;
 
 Matrix::Matrix(size_t num_rows_, size_t num_cols_) {
     if(num_rows_ <= 0) {
-        cerr << "[Wrong_Args] Number of rows must be greater than zero." << endl;
+        cerr << "[Wrong_Args] Number of rows must be greater than zero" << endl;
         exit(1);
     }
 
     if(num_cols_ <= 0){
-        cerr << "[Wrong_Args] Number of columns must be greater than zero." << endl;
+        cerr << "[Wrong_Args] Number of columns must be greater than zero" << endl;
         exit(1);
     }
 
