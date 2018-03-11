@@ -1,6 +1,7 @@
 import sys
 import random
-from matrix import Matrix
+import time
+from matrix import Matrix, basic_multiply
 
 size_A = 0
 size_B = 0
@@ -29,6 +30,18 @@ def main():
     # Test Matrix Values
     #print_matrix(matrix_A)
     #print_matrix(matrix_B)
+
+    if algorithm == 1:
+        print 'Basic Matrix Multiplication'
+        start_time = time.time()
+        result = basic_multiply(matrix_A, matrix_B)
+        end_time = time.time()
+        #print_matrix(result)
+
+    if algorithm == 2:
+        print 'Line Matrix Multiplication'
+
+    print 'Time (seconds) = ', (end_time-start_time)
 
 def right_args(num_args, argv):
     if num_args != 4:
