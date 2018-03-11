@@ -1,4 +1,5 @@
 import sys
+import random
 from matrix import Matrix
 
 size_A = 0
@@ -20,7 +21,14 @@ def main():
         return 2
 
     matrix_A = Matrix(size_A, size_A)
+    fill(matrix_A)
+
     matrix_B = Matrix(size_B, size_B)
+    fill(matrix_B)
+
+    # Test Matrix Values
+    #print_matrix(matrix_A)
+    #print_matrix(matrix_B)
 
 def right_args(num_args, argv):
     if num_args != 4:
@@ -41,6 +49,16 @@ def valid_algorithm(alg):
         print '\t1 - Basic Matrix Multiplication'
         print '\t2 - Line Matrix Multiplication'
         return False
+
+def fill(matrix):
+    for i in range(matrix.num_rows*matrix.num_cols):
+        matrix.matrix_values[i] = random.randint(1,100)
+
+def print_matrix(matrix):
+    print '[',
+    for i in range(matrix.num_rows*matrix.num_cols):
+        print matrix.matrix_values[i] ,
+    print ']'
 
 if __name__ == "__main__":
     main()

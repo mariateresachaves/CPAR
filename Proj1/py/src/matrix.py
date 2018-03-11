@@ -1,5 +1,4 @@
 from array import array
-import random
 
 class Matrix:
     matrix_values = None
@@ -18,4 +17,4 @@ class Matrix:
         self.num_rows = rows
         self.num_cols = columns
 
-        self.matrix_values = array("i", (random.randint(1,100),) * (self.num_rows * self.num_cols))
+        self.matrix_values = array("i", (0,) * (self.num_rows * self.num_cols))
