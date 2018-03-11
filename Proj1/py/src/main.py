@@ -1,10 +1,23 @@
 import sys
 
+size_A = 0
+size_B = 0
+algorithm = 0
+
 def main():
     if right_args(len(sys.argv), sys.argv):
         print 'Everything ok'
     else:
-        return -1
+        return 1
+
+    size_A = int(sys.argv[2])
+    size_B = int(sys.argv[3])
+
+    if valid_algorithm(sys.argv[1]):
+        algorithm = int(sys.argv[1])
+    else:
+        return 2
+
 
 def right_args(num_args, argv):
     if num_args != 4:
@@ -16,6 +29,15 @@ def right_args(num_args, argv):
         return False
 
     return True
+
+def valid_algorithm(alg):
+    if (int(alg) == 1) or (int(alg) == 2):
+        return True
+    else:
+        print '[Wrong_Algorithm] You must choose one of the following options:'
+        print '\t1 - Basic Matrix Multiplication'
+        print '\t2 - Line Matrix Multiplication'
+        return False
 
 if __name__ == "__main__":
     main()
