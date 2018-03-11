@@ -152,10 +152,7 @@ static bool right_algorithm(char const *argv[]) {
 }
 
 static void printTimes() {
-    cout << "MFlop/s = " << (tot_FLOPS/M)/(end_time-begin_time) << endl
-         << "Time (clock cycles) = "
-         << (end_cycles - start_cycles) << endl
+    cout << "MFLOP/s = " << (tot_FLOPS/M)/(end_time-begin_time) << endl
          << "Time (seconds) = "
-         << (end_usec - start_usec)*pow(10,-6) << endl
-         << endl;
+         << (end_usec - start_usec)*pow(10,-6) << endl;
 }

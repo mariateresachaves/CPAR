@@ -2,19 +2,21 @@ import sys
 import random
 import time
 from matrix import Matrix, basic_multiply
+from pypapi import papi_high, events as papi_events
 
 size_A = 0
 size_B = 0
 algorithm = 0
+M = 1000000
+MX = 1024
 
 def main():
-    if right_args(len(sys.argv), sys.argv):
-        print 'Everything ok'
-    else:
+    if not(right_args(len(sys.argv), sys.argv)):
         return 1
 
     size_A = int(sys.argv[2])
     size_B = int(sys.argv[3])
+    tot_FLOPS = 2*MX*MX*size_A;
 
     if valid_algorithm(sys.argv[1]):
         algorithm = int(sys.argv[1])
@@ -31,6 +33,9 @@ def main():
     #print_matrix(matrix_A)
     #print_matrix(matrix_B)
 
+    # Starts some counters
+    papi_high.start_counters([papi_events.PAPI_L1_TCM, papi_events.PAPI_L2_TCM, papi_events.PAPI_TOT_INS])
+
     if algorithm == 1:
         print 'Basic Matrix Multiplication'
         start_time = time.time()
@@ -41,7 +46,15 @@ def main():
     if algorithm == 2:
         print 'Line Matrix Multiplication'
 
-    print 'Time (seconds) = ', (end_time-start_time)
+    # Reads values from counters and reset them
+    results = papi_high.read_counters()  # -> [int, int]
+
+    # Print results
+    print_times(results, tot_FLOPS, start_time, end_time)
+
+    # Stop counters
+    papi_high.stop_counters()  # -> []
+
 
 def right_args(num_args, argv):
     if num_args != 4:
@@ -72,6 +85,13 @@ def print_matrix(matrix):
     for i in range(matrix.num_rows*matrix.num_cols):
         print matrix.matrix_values[i] ,
     print ']'
+
+def print_times(results, tot_FLOPS, start_time, end_time):
+    print 'PAPI_L1_TCM = ', results[0]
+    print 'PAPI_L2_TCM = ', results[1]
+    print 'PAPI_TOT_INS = ', results[2]
+    print 'MFLOP/s = ', (tot_FLOPS/M)/(end_time-start_time)
+    print 'Time (seconds) = ', (end_time-start_time)
 
 if __name__ == "__main__":
     main()
