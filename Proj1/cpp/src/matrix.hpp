@@ -28,7 +28,7 @@ public:
     ~Matrix();
 
     void fill(Matrix *matrix);
-    void fillZeros(Matrix *matrix);
+    void fill_zeros(Matrix *matrix);
     void print(Matrix *matrix);
 
     Matrix *basic_multiply(Matrix *matrix_A, Matrix *matrix_B);

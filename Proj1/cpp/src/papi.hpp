@@ -16,17 +16,17 @@ class Papi {
  public:
   Papi();
   ~Papi();
-  int Init();
-  int InstallEvents();
-  int Start();
-  int StopAndReset();
-  int Destroy();
-  long long GetRealCycles();
-  long long GetRealuSec();
+  int init();
+  int install_events();
+  int start();
+  int stop_and_reset();
+  int destroy();
+  long long get_real_cycles();
+  long long get_real_usec();
 
  private:
-  int AddEvent(int);
-  void PrintCounters(long long *values);
+  int add_event(int);
+  void print_counters(long long *values);
 };
 
 #endif  // PAPI_HPP_

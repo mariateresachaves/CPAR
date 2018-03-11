@@ -30,7 +30,7 @@ void Matrix::fill(Matrix *matrix) {
     }
 }
 
-void Matrix::fillZeros(Matrix *matrix) {
+void Matrix::fill_zeros(Matrix *matrix) {
     for(size_t i = 0; i < num_rows; i++) {
         for(size_t j = 0; j < num_cols; j++) {
             (*matrix)(i,j) = 0; //random number between 1 and 100
@@ -64,7 +64,7 @@ void Matrix::print(Matrix *matrix) {
 
 Matrix *Matrix::basic_multiply(Matrix *matrix_A, Matrix *matrix_B) {
     Matrix *result = new Matrix(matrix_A->num_rows, matrix_B->num_cols);
-    fillZeros(result);
+    fill_zeros(result);
 
     for(size_t i=0; i<matrix_A->num_rows; i++) {
         for(size_t j=0; j<matrix_B->num_cols; j++) {
@@ -81,7 +81,7 @@ Matrix *Matrix::basic_multiply(Matrix *matrix_A, Matrix *matrix_B) {
 
 Matrix *Matrix::line_multiply(Matrix *matrix_A, Matrix *matrix_B) {
     Matrix *result = new Matrix(matrix_A->num_rows, matrix_B->num_cols);
-    fillZeros(result);
+    fill_zeros(result);
 
     for(size_t i=0; i<matrix_A->num_rows; i++) {
         for(size_t k=0; k<matrix_A->num_cols; k++) {

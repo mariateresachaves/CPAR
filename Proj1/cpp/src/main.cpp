@@ -30,13 +30,13 @@ long long end_usec;
 static bool right_args(int argc, char const *argv[]);
 static bool right_sizes(char const *argv[]);
 static bool right_algorithm(char const *argv[]);
-static void printTimes();
+static void print_times();
 
 int main(int argc, char const *argv[]) {
     Papi papi = Papi();
 
-    papi.Init();
-    papi.InstallEvents();
+    papi.init();
+    papi.install_events();
 
     if(!right_args(argc, argv))
         exit(1);
@@ -57,13 +57,13 @@ int main(int argc, char const *argv[]) {
 
     begin_time = clock();
 
-    papi.Start();
+    papi.start();
 
     // Gets the start time in clock cycles
-    start_cycles = papi.GetRealCycles();
+    start_cycles = papi.get_real_cycles();
 
     // Gets the start time in microseconds cycles
-    start_usec = papi.GetRealuSec();
+    start_usec = papi.get_real_usec();
 
     switch (algorithm) {
         case 1:
@@ -84,16 +84,16 @@ int main(int argc, char const *argv[]) {
     }
 
     // Gets the end time in clock cycles
-    end_cycles = papi.GetRealCycles();
+    end_cycles = papi.get_real_cycles();
 
     // Gets the start time in microseconds cycles
-    end_usec = papi.GetRealuSec();
+    end_usec = papi.get_real_usec();
 
-    papi.StopAndReset();
+    papi.stop_and_reset();
 
     end_time = clock();
 
-    printTimes();
+    print_times();
 
     // Test Matrix Values
     /*cout << "Matrix A" << endl;
@@ -151,7 +151,7 @@ static bool right_algorithm(char const *argv[]) {
     return true;
 }
 
-static void printTimes() {
+static void print_times() {
     cout << "MFLOP/s = " << (tot_FLOPS/M)/(end_time-begin_time) << endl
          << "Time (seconds) = "
          << (end_usec - start_usec)*pow(10,-6) << endl;
