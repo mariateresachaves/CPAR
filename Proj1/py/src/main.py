@@ -1,7 +1,7 @@
 import sys
 import random
 import time
-from matrix import Matrix, basic_multiply
+from matrix import Matrix, basic_multiply, line_multiply
 from pypapi import papi_high, events as papi_events
 
 size_A = 0
@@ -45,6 +45,10 @@ def main():
 
     if algorithm == 2:
         print 'Line Matrix Multiplication'
+        start_time = time.time()
+        result = line_multiply(matrix_A, matrix_B)
+        end_time = time.time()
+        #print_matrix(result)
 
     # Reads values from counters and reset them
     results = papi_high.read_counters()  # -> [int, int]
