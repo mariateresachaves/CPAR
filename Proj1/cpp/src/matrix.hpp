@@ -33,6 +33,9 @@ public:
 
     Matrix *basic_multiply(Matrix *matrix_A, Matrix *matrix_B);
     Matrix *line_multiply(Matrix *matrix_A, Matrix *matrix_B);
+
+    Matrix *omp_basic_multiply(Matrix *matrix_A, Matrix *matrix_B);
+    Matrix *omp_line_multiply(Matrix *matrix_A, Matrix *matrix_B);
 };
 
 #endif // MATRIX_HPP_

@@ -38,16 +38,6 @@ int main(int argc, char const *argv[]) {
     papi.init();
     papi.install_events();
 
-    begin_time = clock();
-
-    papi.start();
-
-    // Gets the start time in clock cycles
-    start_cycles = papi.get_real_cycles();
-
-    // Gets the start time in microseconds cycles
-    start_usec = papi.get_real_usec();
-
     if(!right_args(argc, argv))
         exit(1);
 
@@ -65,17 +55,35 @@ int main(int argc, char const *argv[]) {
     Matrix *matrix_B = new Matrix(size_B, size_B);
     matrix_B->fill(matrix_B);
 
+    begin_time = clock();
+
+    papi.start();
+
+    // Gets the start time in clock cycles
+    start_cycles = papi.get_real_cycles();
+
+    // Gets the start time in microseconds cycles
+    start_usec = papi.get_real_usec();
+
     switch (algorithm) {
         case 1:
         cout << "Basic Matrix Multiplication" << endl;
-        // Matrix *basic_result = matrix_A->basic_multiply(matrix_A, matrix_B);
         matrix_A->basic_multiply(matrix_A, matrix_B);
         break;
 
         case 2:
         cout << "Line Matrix Multiplication" << endl;
-        //Matrix *line_result = matrix_A->line_multiply(matrix_A, matrix_B);
         matrix_A->line_multiply(matrix_A, matrix_B);
+        break;
+
+        case 3:
+        cout << "OpenMP Basic Matrix Multiplication" << endl;
+        matrix_A->omp_basic_multiply(matrix_A, matrix_B);
+        break;
+
+        case 4:
+        cout << "OpenMP Line Matrix Multiplication" << endl;
+        matrix_A->omp_line_multiply(matrix_A, matrix_B);
         break;
 
         default:

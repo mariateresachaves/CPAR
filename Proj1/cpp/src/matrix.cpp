@@ -93,3 +93,39 @@ Matrix *Matrix::line_multiply(Matrix *matrix_A, Matrix *matrix_B) {
 
     return result;
 }
+
+Matrix *Matrix::omp_basic_multiply(Matrix *matrix_A, Matrix *matrix_B) {
+    Matrix *result = new Matrix(matrix_A->num_rows, matrix_B->num_cols);
+    size_t j, k;
+
+    fill_zeros(result);
+    #pragma omp parallel for private (j,k)
+    for(size_t i=0; i<matrix_A->num_rows; i++) {
+        for(j=0; j<matrix_B->num_cols; j++) {
+            int cell_result = 0;
+            for(k=0; k<matrix_A->num_cols; k++) {
+                cell_result += (*matrix_A)(i,k) * (*matrix_B)(k,j);
+            }
+            (*result)(i,j) = cell_result;
+        }
+    }
+
+    return result;
+}
+
+Matrix *Matrix::omp_line_multiply(Matrix *matrix_A, Matrix *matrix_B) {
+    Matrix *result = new Matrix(matrix_A->num_rows, matrix_B->num_cols);
+    fill_zeros(result);
+    size_t j, k;
+
+    #pragma omp parallel for private (k,j)
+    for(size_t i=0; i<matrix_A->num_rows; i++) {
+        for(k=0; k<matrix_A->num_cols; k++) {
+            for(j=0; j<matrix_B->num_cols; j++) {
+                (*result)(i,j) += (*matrix_A)(i,k) * (*matrix_B)(k,j);
+            }
+        }
+    }
+
+    return result;
+}
