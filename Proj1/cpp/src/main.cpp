@@ -38,6 +38,16 @@ int main(int argc, char const *argv[]) {
     papi.init();
     papi.install_events();
 
+    begin_time = clock();
+
+    papi.start();
+
+    // Gets the start time in clock cycles
+    start_cycles = papi.get_real_cycles();
+
+    // Gets the start time in microseconds cycles
+    start_usec = papi.get_real_usec();
+
     if(!right_args(argc, argv))
         exit(1);
 
@@ -54,16 +64,6 @@ int main(int argc, char const *argv[]) {
 
     Matrix *matrix_B = new Matrix(size_B, size_B);
     matrix_B->fill(matrix_B);
-
-    begin_time = clock();
-
-    papi.start();
-
-    // Gets the start time in clock cycles
-    start_cycles = papi.get_real_cycles();
-
-    // Gets the start time in microseconds cycles
-    start_usec = papi.get_real_usec();
 
     switch (algorithm) {
         case 1:
@@ -152,7 +152,7 @@ static bool right_algorithm(char const *argv[]) {
 }
 
 static void print_times() {
-    cout << "MFLOP/s = " << (tot_FLOPS/M)/(end_time-begin_time) << endl
+    cout << "MFLOP/s = " << (tot_FLOPS*M)/(end_time-begin_time) << endl
          << "Time (seconds) = "
          << (end_usec - start_usec)*pow(10,-6) << endl;
 }

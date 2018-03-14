@@ -34,7 +34,7 @@ def main():
     #print_matrix(matrix_B)
 
     # Starts some counters
-    papi_high.start_counters([papi_events.PAPI_L1_TCM, papi_events.PAPI_L2_TCM, papi_events.PAPI_TOT_INS])
+    papi_high.start_counters([papi_events.PAPI_L1_TCM, papi_events.PAPI_L2_TCM, papi_events.PAPI_TOT_INS, papi_events.PAPI_TOT_CYC])
 
     if algorithm == 1:
         print 'Basic Matrix Multiplication'
