@@ -55,6 +55,13 @@ int main(int argc, char const *argv[]) {
     Matrix *matrix_B = new Matrix(size_B, size_B);
     matrix_B->fill(matrix_B);
 
+    // Test Matrix Values
+    /*Matrix *result = new Matrix(size_A, size_B);
+    cout << "Matrix A" << endl;
+    matrix_A->print(matrix_A);
+    cout << "Matrix B" << endl;
+    matrix_A->print(matrix_B);*/
+
     begin_time = clock();
 
     papi.start();
@@ -65,24 +72,30 @@ int main(int argc, char const *argv[]) {
     // Gets the start time in microseconds cycles
     start_usec = papi.get_real_usec();
 
+
+
     switch (algorithm) {
         case 1:
         cout << "Basic Matrix Multiplication" << endl;
+        //result = matrix_A->basic_multiply(matrix_A, matrix_B);
         matrix_A->basic_multiply(matrix_A, matrix_B);
         break;
 
         case 2:
         cout << "Line Matrix Multiplication" << endl;
+        //result = matrix_A->line_multiply(matrix_A, matrix_B);
         matrix_A->line_multiply(matrix_A, matrix_B);
         break;
 
         case 3:
         cout << "OpenMP Basic Matrix Multiplication" << endl;
+        //result = matrix_A->omp_basic_multiply(matrix_A, matrix_B);
         matrix_A->omp_basic_multiply(matrix_A, matrix_B);
         break;
 
         case 4:
         cout << "OpenMP Line Matrix Multiplication" << endl;
+        //result = matrix_A->omp_line_multiply(matrix_A, matrix_B);
         matrix_A->omp_line_multiply(matrix_A, matrix_B);
         break;
 
@@ -101,17 +114,9 @@ int main(int argc, char const *argv[]) {
 
     end_time = clock();
 
-    print_times();
+    //matrix_A->print(result);
 
-    // Test Matrix Values
-    /*cout << "Matrix A" << endl;
-    matrix_A->print(matrix_A);
-    cout << "Matrix B" << endl;
-    matrix_A->print(matrix_B);
-    cout << "Matrix AxB [BASIC]" << endl;
-    matrix_A->print(basic_result);
-    cout << "Matrix AxB [LINE]" << endl;
-    matrix_A->print(line_result);*/
+    print_times();
 
     return 0;
 }

@@ -45,18 +45,23 @@ int Papi::install_events() {
     if(retval != PAPI_OK)
         return retval;
 
+    // Level 3 total cache misses
+    retval = add_event(PAPI_L3_TCM);
+    if(retval != PAPI_OK)
+        return retval;
+
     // Total instructions executed
     retval = add_event(PAPI_TOT_INS);
     if(retval != PAPI_OK)
         return retval;
 
     // Total cycles executed
-    retval = add_event(PAPI_TOT_CYC);
+    /*retval = add_event(PAPI_TOT_CYC);
     if(retval != PAPI_OK)
         return retval;
 
     // Level 1 data cache misses
-    /*retval = add_event(PAPI_L1_DCM);
+    retval = add_event(PAPI_L1_DCM);
     if(retval != PAPI_OK)
         return retval;
 
@@ -107,11 +112,6 @@ int Papi::install_events() {
 
     // Reference clock cycles
     retval = add_event(PAPI_REF_CYC);
-    if(retval != PAPI_OK)
-        return retval;
-
-    // Level 3 total cache misses
-    retval = add_event(PAPI_L3_TCM);
     if(retval != PAPI_OK)
         return retval;
 

@@ -10,17 +10,17 @@ using namespace std;
 
 class Matrix {
 private:
-    int *matrix_values;
+    float *matrix_values;
 
 public:
     size_t num_rows;
     size_t num_cols;
 
-    inline int &operator()(size_t row, size_t column) {
+    inline float &operator()(size_t row, size_t column) {
         return matrix_values[row * num_cols + column];
     }
 
-    inline int operator()(size_t row, size_t column) const {
+    inline float operator()(size_t row, size_t column) const {
         return matrix_values[row * num_cols + column];
     }
 

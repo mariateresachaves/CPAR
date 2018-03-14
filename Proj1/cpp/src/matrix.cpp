@@ -17,7 +17,7 @@ Matrix::Matrix(size_t num_rows_, size_t num_cols_) {
     num_rows = num_rows_;
     num_cols = num_cols_;
 
-    matrix_values = new int[num_rows*num_cols];
+    matrix_values = new float[num_rows*num_cols];
 }
 
 Matrix::~Matrix() { delete[] matrix_values; }
@@ -25,7 +25,8 @@ Matrix::~Matrix() { delete[] matrix_values; }
 void Matrix::fill(Matrix *matrix) {
     for(size_t i = 0; i < num_rows; i++) {
         for(size_t j = 0; j < num_cols; j++) {
-            (*matrix)(i,j) = (rand() % 100 + 1); //random number between 1 and 100
+            (*matrix)(i,j) = static_cast <float> (rand()) / static_cast <float> (101);
+            //(*matrix)(i,j) = (rand() % 100 + 1); //random number between 1 and 100
         }
     }
 }
@@ -33,7 +34,7 @@ void Matrix::fill(Matrix *matrix) {
 void Matrix::fill_zeros(Matrix *matrix) {
     for(size_t i = 0; i < num_rows; i++) {
         for(size_t j = 0; j < num_cols; j++) {
-            (*matrix)(i,j) = 0; //random number between 1 and 100
+            (*matrix)(i,j) = 0.0;
         }
     }
 }
@@ -68,11 +69,9 @@ Matrix *Matrix::basic_multiply(Matrix *matrix_A, Matrix *matrix_B) {
 
     for(size_t i=0; i<matrix_A->num_rows; i++) {
         for(size_t j=0; j<matrix_B->num_cols; j++) {
-            int cell_result = 0;
             for(size_t k=0; k<matrix_A->num_cols; k++) {
-                cell_result += (*matrix_A)(i,k) * (*matrix_B)(k,j);
+                (*result)(i,j) += (*matrix_A)(i,k) * (*matrix_B)(k,j);
             }
-            (*result)(i,j) = cell_result;
         }
     }
 
@@ -102,11 +101,9 @@ Matrix *Matrix::omp_basic_multiply(Matrix *matrix_A, Matrix *matrix_B) {
     #pragma omp parallel for private (j,k)
     for(size_t i=0; i<matrix_A->num_rows; i++) {
         for(j=0; j<matrix_B->num_cols; j++) {
-            int cell_result = 0;
             for(k=0; k<matrix_A->num_cols; k++) {
-                cell_result += (*matrix_A)(i,k) * (*matrix_B)(k,j);
+                (*result)(i,j) += (*matrix_A)(i,k) * (*matrix_B)(k,j);
             }
-            (*result)(i,j) = cell_result;
         }
     }
 

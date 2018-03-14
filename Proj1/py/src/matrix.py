@@ -17,18 +17,15 @@ class Matrix:
         self.num_rows = rows
         self.num_cols = columns
 
-        self.matrix_values = array("i", (0,) * (self.num_rows * self.num_cols))
+        self.matrix_values = array("f", (0,) * (self.num_rows * self.num_cols))
 
 def basic_multiply(matrix_A, matrix_B):
     result = Matrix(matrix_A.num_rows, matrix_B.num_cols)
 
     for i in range(matrix_A.num_rows):
         for j in range(matrix_B.num_cols):
-            cell_result = 0
             for k in range(matrix_A.num_cols):
-                cell_result += matrix_A.matrix_values[i*matrix_A.num_cols + k] * matrix_B.matrix_values[k*matrix_B.num_cols + j]
-
-            result.matrix_values[i*result.num_cols + j] = cell_result
+                result.matrix_values[i*result.num_cols + j] += matrix_A.matrix_values[i*matrix_A.num_cols + k] * matrix_B.matrix_values[k*matrix_B.num_cols + j]
 
     return result
 

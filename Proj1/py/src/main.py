@@ -34,7 +34,7 @@ def main():
     #print_matrix(matrix_B)
 
     # Starts some counters
-    papi_high.start_counters([papi_events.PAPI_L1_TCM, papi_events.PAPI_L2_TCM, papi_events.PAPI_TOT_INS])
+    papi_high.start_counters([papi_events.PAPI_L1_TCM, papi_events.PAPI_L2_TCM, papi_events.PAPI_L3_TCM, papi_events.PAPI_TOT_INS])
 
     if algorithm == 1:
         print 'Basic Matrix Multiplication'
@@ -82,7 +82,7 @@ def valid_algorithm(alg):
 
 def fill(matrix):
     for i in range(matrix.num_rows*matrix.num_cols):
-        matrix.matrix_values[i] = random.randint(1,100)
+        matrix.matrix_values[i] = random.uniform(1.0,100.0)
 
 def print_matrix(matrix):
     print '[',
