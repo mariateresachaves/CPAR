@@ -34,7 +34,7 @@ def main():
     #print_matrix(matrix_B)
 
     # Starts some counters
-    papi_high.start_counters([papi_events.PAPI_L1_TCM, papi_events.PAPI_L2_TCM, papi_events.PAPI_L3_TCM, papi_events.PAPI_TOT_INS])
+    papi_high.start_counters([papi_events.PAPI_L1_DCM, papi_events.PAPI_L1_ICM, papi_events.PAPI_L1_TCM, papi_events.PAPI_L2_TCM, papi_events.PAPI_L3_TCM, papi_events.PAPI_TOT_INS])
 
     if algorithm == 1:
         print 'Basic Matrix Multiplication'
@@ -91,9 +91,12 @@ def print_matrix(matrix):
     print ']'
 
 def print_times(results, tot_FLOPS, start_time, end_time):
-    print 'PAPI_L1_TCM = ', results[0]
-    print 'PAPI_L2_TCM = ', results[1]
-    print 'PAPI_TOT_INS = ', results[2]
+    print 'PAPI_L1_DCM = ', results[0]
+    print 'PAPI_L1_ICM = ', results[1]
+    print 'PAPI_L1_TCM = ', results[2]
+    print 'PAPI_L2_TCM = ', results[3]
+    print 'PAPI_L3_TCM = ', results[4]
+    print 'PAPI_TOT_INS = ', results[5]
     print 'MFLOP/s = ', (tot_FLOPS/M)/(end_time-start_time)
     print 'Time (seconds) = ', (end_time-start_time)
 
